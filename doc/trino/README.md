@@ -1,4 +1,4 @@
-# Trino Iceberg + Exasol Cross-Catalog Demo
+# Trino Iceberg + Exasol Environment Setup
 
 How to run a Trino server that queries **Iceberg** and **Exasol** data sources, and how to join tables across those catalogs. The setup uses:
 
