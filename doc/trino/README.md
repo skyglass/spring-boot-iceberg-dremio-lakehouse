@@ -88,6 +88,51 @@ FROM iceberg.hr.employee i
          JOIN exasol.hr.employee e
               ON i.id = e.id
                   AND i.hashtype_col = e.hashtype_col;  -- join on hash column
+
+
+-- Cross-catalog LIMIT 1 join
+SELECT
+    i.id,
+    i.username AS iceberg_user,
+    e.username AS exasol_user,
+
+    -- Convert VARBINARY/HASHTYPE columns to readable hex
+    to_hex(i.hashtype_col) AS iceberg_hash_hex,
+    to_hex(e.hashtype_col) AS exasol_hash_hex,
+    to_hex(e.hashtype_col2) AS exasol_hash2_hex
+
+FROM iceberg.hr.employee i
+         JOIN exasol.hr.employee e
+              ON i.hashtype_col = e.hashtype_col
+
+LIMIT 1;
+
+
+-- Cross-catalog TOPN 1 join ordered by username ASC
+SELECT
+    i.id,
+    i.username AS iceberg_user,
+    e.username AS exasol_user,
+    to_hex(i.hashtype_col) AS iceberg_hash_hex,
+    to_hex(e.hashtype_col) AS exasol_hash_hex
+FROM iceberg.hr.employee i
+         JOIN exasol.hr.employee e
+              ON i.id = e.id
+ORDER BY i.username ASC
+    LIMIT 1;
+
+-- Cross-catalog TOPN 1 join ordered by username DESC
+SELECT
+    i.id,
+    i.username AS iceberg_user,
+    e.username AS exasol_user,
+    to_hex(i.hashtype_col) AS iceberg_hash_hex,
+    to_hex(e.hashtype_col) AS exasol_hash_hex
+FROM iceberg.hr.employee i
+         JOIN exasol.hr.employee e
+              ON i.id = e.id
+ORDER BY i.username DESC
+    LIMIT 1;                 
 ```
 
 
